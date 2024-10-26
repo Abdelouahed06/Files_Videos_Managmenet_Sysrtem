@@ -1,0 +1,114 @@
+<-- classes -->
+CREATE TABLE classes (
+    class_id INT PRIMARY KEY AUTO_INCREMENT,
+    class VARCHAR(10) UNIQUE NOT NULL,
+    time_stamp timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+<-- subjects -->
+CREATE TABLE subjects (
+    subject_id INT PRIMARY KEY AUTO_INCREMENT,
+    subject VARCHAR(15) UNIQUE NOT NULL,
+    time_stamp timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+<-- teachers -->
+CREATE TABLE teachers (
+    teacher_id VARCHAR(8) PRIMARY KEY NOT NULL,
+    first_name VARCHAR(15) NOT NULL,
+    last_name VARCHAR(25) NOT NULL,
+    email VARCHAR(30) NOT NULL,
+    password VARCHAR(60) NOT NULL,
+    gender VARCHAR(6) NOT NULL,
+    birth_date DATE NOT NULL,
+    time_stamp timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+<-- students -->
+CREATE TABLE students (
+    student_id VARCHAR(10) PRIMARY KEY NOT NULL,
+    first_name VARCHAR(15) NOT NULL,
+    last_name VARCHAR(25) NOT NULL,
+    email VARCHAR(30) NOT NULL,
+    password VARCHAR(60) NOT NULL,
+    gender VARCHAR(6) NOT NULL,
+    birth_date DATE NOT NULL,
+    class_id INT NOT NULL,
+    time_stamp timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY(class_id) REFERENCES classes(class_id) ON DELETE CASCADE
+);
+
+<-- teacher_classes -->
+CREATE TABLE teacher_classes (
+    teacher_id VARCHAR(8) NOT NULL,
+    class_id INT NOT NULL,
+    PRIMARY KEY(teacher_id, class_id),
+    FOREIGN KEY(class_id) REFERENCES classes(class_id) ON DELETE CASCADE,
+    FOREIGN KEY(teacher_id) REFERENCES teachers(teacher_id) ON DELETE CASCADE
+);
+
+<-- teacher_subjects -->
+CREATE TABLE teacher_subjects (
+    teacher_id VARCHAR(8) NOT NULL,
+    subject_id INT NOT NULL,
+    PRIMARY KEY(teacher_id, subject_id),
+    FOREIGN KEY(subject_id) REFERENCES subjects(subject_id) ON DELETE CASCADE,
+    FOREIGN KEY(teacher_id) REFERENCES teachers(teacher_id) ON DELETE CASCADE
+);
+
+
+<-- admin -->
+CREATE TABLE admin (
+    admin_id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    first_name VARCHAR(15) NOT NULL,
+    last_name VARCHAR(25) NOT NULL,
+    email VARCHAR(30) NOT NULL,
+    password VARCHAR(60) NOT NULL
+);
+
+<-- files -->
+CREATE TABLE files(
+    file_id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    file LONGBLOB NOT NULL,
+    file_name VARCHAR(50) NOT NULL,
+    file_type VARCHAR(50) NOT NULL,
+    description VARCHAR(200) NOT NULL,
+    subject_id INT NOT NULL,
+    teacher_id VARCHAR(8) NOT NULL,
+    time_stamp timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY(subject_id) REFERENCES subjects(subject_id) ON DELETE CASCADE,
+    FOREIGN KEY(teacher_id) REFERENCES teachers(teacher_id) ON DELETE CASCADE
+);
+
+
+<-- file_classes -->
+CREATE TABLE file_classes (
+    file_id INT NOT NULL,
+    class_id INT NOT NULL,
+    PRIMARY KEY(file_id, class_id),
+    FOREIGN KEY(class_id) REFERENCES classes(class_id) ON DELETE CASCADE,
+    FOREIGN KEY(file_id) REFERENCES files(file_id) ON DELETE CASCADE
+);
+
+<-- videos -->
+CREATE TABLE videos(
+    video_id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    video LONGBLOB NOT NULL,
+    video_name VARCHAR(50) NOT NULL,
+    video_type VARCHAR(50) NOT NULL,
+    description VARCHAR(200) NOT NULL,
+    subject_id INT NOT NULL,
+    teacher_id VARCHAR(8) NOT NULL,
+    time_stamp timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY(subject_id) REFERENCES subjects(subject_id) ON DELETE CASCADE,
+    FOREIGN KEY(teacher_id) REFERENCES teachers(teacher_id) ON DELETE CASCADE
+);
+
+<-- video_classes -->
+CREATE TABLE video_classes (
+    video_id INT NOT NULL,
+    class_id INT NOT NULL,
+    PRIMARY KEY(video_id, class_id),
+    FOREIGN KEY(class_id) REFERENCES classes(class_id) ON DELETE CASCADE,
+    FOREIGN KEY(video_id) REFERENCES videos(video_id) ON DELETE CASCADE
+);

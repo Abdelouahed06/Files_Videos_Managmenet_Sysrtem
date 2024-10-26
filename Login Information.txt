@@ -1,0 +1,13 @@
+|----------------------------- 
+| admin login info                          
+|   email : abdeessa@edu.ma        
+|   password : admin123               
+|_________________________
+| teacher login info  
+|   email : naybyhya@edu.ma
+|   password : teacher123
+|_________________________
+| student login info 
+|   email : yassirhamza@edu.ma
+|   password :student123
+|-----------------------------
